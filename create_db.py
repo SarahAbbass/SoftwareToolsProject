@@ -4,6 +4,7 @@ def connect_to_db():
     conn = sqlite3.connect('database.db')
     return conn
 
+# creating customers table and functionalities
 def create_customers_table():
     try:
         conn = connect_to_db()
@@ -140,7 +141,136 @@ def delete_customer(username):
         conn.close()
     return message
 
+#creating inventory table and functionalities
+def create_inventory_table():
+    try:
+        conn = connect_to_db()
+        conn.execute('''
+            CREATE TABLE IF NOT EXISTS inventory(
+                 good_id INTEGER PRIMARY KEY,
+                 name TEXT NOT NULL,
+                 category TEXT NOT NULL,
+                 price INTEGER NOT NULL,
+                 description TEXT,
+                 count INTEGER
+            );
+        ''')
+        conn.commit()
+        print("Inventory table created successfully!")
+    except:
+        print("Inventory table creation failed -")
+    finally:
+        conn.close()
+
+def insert_good(good): 
+    inserted_good = {} 
+    try:
+        conn = connect_to_db()
+        cur = conn.cursor()
+        cur.execute("INSERT INTO inventory (name, category, price, description, count) VALUES (?, ?, ?, ?, ?)",
+                    (good['name'], good['category'], good['price'], good['description'], good['count'])) 
+        conn.commit()
+        inserted_good = get_good_by_good_id(cur.lastrowid)
+    except: 
+        conn().rollback()
+    finally: 
+        conn.close()
+    return inserted_good
+
+ahmad_tea = {
+    "name": "Ahmad Tea",
+    "category": "Food", 
+    "price": 1.3,
+    "description": "Black Tea",
+    "count": 22
+}
+
+dollys = {
+    "name": "Dolly's Ketchup",
+    "category": "Food", 
+    "price": 0.8,
+    "description": "Tomato Ketchup",
+    "count": 15
+}
+
+def get_goods(): 
+    goods = []
+    try:
+        conn = connect_to_db() 
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor() 
+        cur.execute("SELECT * FROM inventory") 
+        rows = cur.fetchall()
+        
+        # convert row objects to dictionary 
+        for i in rows:
+            good = {}
+            good["good_id"] = i["good_id"] 
+            good["name"] = i["name"] 
+            good["category"] = i["category"] 
+            good["price"] = i["price"] 
+            good["description"] = i["description"] 
+            good["count"] = i["count"]
+            goods.append(good)
+    except:
+        goods = []
+    return goods
+
+def get_good_by_good_id(good_id): 
+    good = {}
+    try:
+        conn = connect_to_db() 
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM inventory WHERE good_id = ?", (good_id,)) 
+        row = cur.fetchone()
+        
+        # convert row object to dictionary 
+        good["good_id"] = row["good_id"] 
+        good["name"] = row["name"] 
+        good["category"] = row["category"] 
+        good["price"] = row["price"] 
+        good["description"] = row["description"] 
+        good["count"] = row["count"]
+    except:
+        good = {}
+    return good
+
+def update_good(good): 
+    updated_good = {} 
+    try:
+        conn = connect_to_db() 
+        cur = conn.cursor()
+        cur.execute("UPDATE inventory SET name = ?, category = ?, price = ?, description = ?, count = ? WHERE good_id = ?",
+                    (good['name'], good['category'], good['price'], good['description'], good['count'],))
+        conn.commit()
+        
+        #return the user
+        updated_good = get_good_by_good_id(good["good_id"])
+    except: 
+        conn.rollback()
+        updated_good = {} 
+    finally:
+        conn.close() 
+    return updated_good
+
+def delete_good(good_id): 
+    message = {}
+    try:
+        conn = connect_to_db()
+        conn.execute("DELETE from inventory WHERE good_id = ?", (good_id,))
+        conn.commit()
+        message["status"] = "Good deleted successfully."
+    except: 
+        conn.rollback()
+        message["status"] = "Cannot delete good" 
+    finally:
+        conn.close()
+    return message
 
 #create_customers_table()
 #insert_customer(customer_Sara)
 #insert_customer(customer_Malak)
+#create_inventory_table()
+#insert_good(ahmad_tea)
+#insert_good(dollys)
