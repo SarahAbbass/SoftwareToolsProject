@@ -61,7 +61,7 @@ customer_Malak = {
     "marital_status": "Married" 
 }
 
-def get_customer(): 
+def get_customers(): 
     customers = []
     try:
         conn = connect_to_db() 
