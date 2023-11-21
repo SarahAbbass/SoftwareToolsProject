@@ -123,7 +123,7 @@ def update_customer(customer):
         conn = connect_to_db() 
         cur = conn.cursor()
         cur.execute("UPDATE customers SET full_name = ?, password = ?, address = ?, age = ?, gender = ?, marital_status = ?, wallet_balance = ? WHERE username = ?",
-                    (customer['full_name'], customer['password'], customer['address'], customer['age'], customer['gender'], customer['marital_status'], customer["wallet_balance"]))
+                    (customer['full_name'], customer['password'], customer['address'], customer['age'], customer['gender'], customer['marital_status'], customer["wallet_balance"], customer["username"]))
         conn.commit()
         
         #return the user
@@ -250,7 +250,7 @@ def update_good(good):
         conn = connect_to_db() 
         cur = conn.cursor()
         cur.execute("UPDATE inventory SET name = ?, category = ?, price = ?, description = ?, count = ? WHERE good_id = ?",
-                    (good['name'], good['category'], good['price'], good['description'], good['count'],))
+                    (good['name'], good['category'], good['price'], good['description'], good['count'], good["good_id"]))
         conn.commit()
         
         #return the user
