@@ -4,8 +4,11 @@ def connect_to_db():
     conn = sqlite3.connect('database.db')
     return conn
 
+################################### Customers #######################################
 # creating customers table and functionalities
 def create_customers_table():
+    """Create the 'customers' table in the database if it does not exist.
+    """
     try:
         conn = connect_to_db()
         conn.execute('''
@@ -29,6 +32,13 @@ def create_customers_table():
         conn.close()
 
 def insert_customer(customer): 
+    """Insert a new customer into the database.
+
+    :param customer: A dictionary representing the customer
+    :type customer: dict
+    :return: A dictionary representing the inserted customer
+    :rtype: dict
+    """
     inserted_customer = {} 
     try:
         conn = connect_to_db()
@@ -69,6 +79,11 @@ customer_Malak = {
 }
 
 def get_customers(): 
+    """Retrieve a list of all customers.
+
+    :return: List of dictionaries, each representing a customer
+    :rtype: list
+    """
     customers = []
     try:
         conn = connect_to_db() 
@@ -95,6 +110,13 @@ def get_customers():
     return customers
 
 def get_customer_by_username(username): 
+    """Retrieve customer information based on the provided username.
+
+    :param username: The username of the customer
+    :type username: str
+    :return: A dictionary representing the customer if found, else None
+    :rtype: dict or None
+    """
     customer = {}
     try:
         conn = connect_to_db() 
@@ -118,6 +140,13 @@ def get_customer_by_username(username):
     return customer
 
 def update_customer(customer): 
+    """Update customer information in the database.
+
+    :param customer: A dictionary representing the updated customer information
+    :type customer: dict
+    :return: A dictionary representing the updated customer
+    :rtype: dict
+    """
     updated_customer = {} 
     try:
         conn = connect_to_db() 
@@ -136,6 +165,13 @@ def update_customer(customer):
     return updated_customer
 
 def delete_customer(username): 
+    """Delete a customer based on the provided username.
+
+    :param username: The username of the customer to be deleted
+    :type username: str
+    :return: A message representing either the success or the failure of deletion
+    :rtype: str
+    """
     message = {}
     try:
         conn = connect_to_db()
@@ -149,8 +185,11 @@ def delete_customer(username):
         conn.close()
     return message
 
+################################### Inventory #######################################
 #creating inventory table and functionalities
 def create_inventory_table():
+    """Create the 'inventory' table in the database if it does not exist.
+    """
     try:
         conn = connect_to_db()
         conn.execute('''
@@ -171,6 +210,13 @@ def create_inventory_table():
         conn.close()
 
 def insert_good(good): 
+    """Insert a new good into the database.
+
+    :param good: A dictionary representing the good
+    :type good: dict
+    :return: A dictionary representing the inserted good
+    :rtype: dict
+    """
     inserted_good = {} 
     try:
         conn = connect_to_db()
@@ -202,6 +248,11 @@ dollys = {
 }
 
 def get_goods(): 
+    """Retrieve a list of all goods.
+
+    :return: List of dictionaries, each representing a good
+    :rtype: list
+    """
     goods = []
     try:
         conn = connect_to_db() 
@@ -225,6 +276,13 @@ def get_goods():
     return goods
 
 def get_good_by_good_id(good_id): 
+    """Retrieve good information based on the provided good_id.
+
+    :param good_id: The good_id of the good
+    :type good_id: str
+    :return: A dictionary representing the good if found, else None
+    :rtype: dict or None
+    """
     good = {}
     try:
         conn = connect_to_db() 
@@ -245,6 +303,13 @@ def get_good_by_good_id(good_id):
     return good
 
 def update_good(good): 
+    """Update good information in the database.
+
+    :param good: A dictionary representing the updated good information
+    :type good: dict
+    :return: A dictionary representing the updated good
+    :rtype: dict
+    """
     updated_good = {} 
     try:
         conn = connect_to_db() 
@@ -263,6 +328,13 @@ def update_good(good):
     return updated_good
 
 def delete_good(good_id): 
+    """Delete a good based on the provided good_id.
+
+    :param good_id: The good_id of the good to be deleted
+    :type good_id: str
+    :return: A message representing either the success or the failure of deletion
+    :rtype: str
+    """
     message = {}
     try:
         conn = connect_to_db()
