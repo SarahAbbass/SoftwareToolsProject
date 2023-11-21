@@ -17,7 +17,8 @@ def create_customers_table():
                  address TEXT,
                  age INTEGER,
                  gender TEXT,
-                 marital_status TEXT
+                 marital_status TEXT,
+                 wallet_balance REAL DEFAULT 0.0
             );
         ''')
         conn.commit()
@@ -32,10 +33,13 @@ def insert_customer(customer):
     try:
         conn = connect_to_db()
         cur = conn.cursor()
-        cur.execute("INSERT INTO customers (full_name, username, password, address, age, gender, marital_status) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                    (customer['full_name'], customer['username'], customer['password'], customer['address'], customer['age'], customer['gender'], customer['marital_status'])) 
+        cur.execute("INSERT INTO customers (full_name, username, password, address, age, gender, marital_status, wallet_balance) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                    (customer['full_name'], customer['username'], customer['password'], customer['address'], customer['age'], customer['gender'], customer['marital_status'], customer['wallet_balance'])) 
         conn.commit()
         inserted_customer = get_customer_by_username(cur.lastrowid)
+    except sqlite3.IntegrityError as e:
+        conn.rollback()
+        return {'error': f'Error: {str(e)}. The username must be unique.'}
     except: 
         conn().rollback()
     finally: 
@@ -49,7 +53,8 @@ customer_Sara = {
     "address": "Geneva, Switzerland",
     "age": 22,
     "gender": "Female",
-    "marital_status": "Single" 
+    "marital_status": "Single",
+    "wallet_balance": 0.0
 }
 
 customer_Malak = {
@@ -59,7 +64,8 @@ customer_Malak = {
     "address": "Beirut, Lebanon",
     "age": 34,
     "gender": "Female",
-    "marital_status": "Married" 
+    "marital_status": "Married",
+    "wallet_balance": 3.0
 }
 
 def get_customers(): 
@@ -82,6 +88,7 @@ def get_customers():
             customer["age"] = i["age"]
             customer["gender"] = i["gender"]
             customer["marital_status"] = i["marital_status"] 
+            customer["wallet_balance"] = i["wallet_balance"]
             customers.append(customer)
     except:
         customers = []
@@ -105,6 +112,7 @@ def get_customer_by_username(username):
         customer["age"] = row["age"]
         customer["gender"] = row["gender"]
         customer["marital_status"] = row["marital_status"] 
+        customer["wallet_balance"] = row["wallet_balance"]
     except:
         customer = {}
     return customer
@@ -114,8 +122,8 @@ def update_customer(customer):
     try:
         conn = connect_to_db() 
         cur = conn.cursor()
-        cur.execute("UPDATE customers SET full_name = ?, password = ?, address = ?, age = ?, gender = ?, marital_status = ? WHERE username = ?",
-                    (customer['full_name'], customer['password'], customer['address'], customer['age'], customer['gender'], customer['marital_status'],))
+        cur.execute("UPDATE customers SET full_name = ?, password = ?, address = ?, age = ?, gender = ?, marital_status = ?, wallet_balance = ? WHERE username = ?",
+                    (customer['full_name'], customer['password'], customer['address'], customer['age'], customer['gender'], customer['marital_status'], customer["wallet_balance"]))
         conn.commit()
         
         #return the user
