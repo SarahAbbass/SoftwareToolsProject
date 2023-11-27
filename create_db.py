@@ -195,7 +195,7 @@ def create_inventory_table():
         conn.execute('''
             CREATE TABLE IF NOT EXISTS inventory(
                  good_id INTEGER PRIMARY KEY,
-                 name TEXT NOT NULL,
+                 name TEXT UNIQUE NOT NULL,
                  category TEXT NOT NULL,
                  price INTEGER NOT NULL,
                  description TEXT,
@@ -347,6 +347,33 @@ def delete_good(good_id):
     finally:
         conn.close()
     return message
+
+def get_good_by_name(name):
+    """Retrieve a good with the given name.
+
+    :param name: The name of the good
+    :type name: str
+    :return: A good with the given name
+    :rtype: dict or None
+    """
+    good = {}
+    try:
+        conn = connect_to_db()
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM inventory WHERE name = ?", (name,)) 
+        row = cur.fetchone()
+        
+        # convert row object to dictionary 
+        good["good_id"] = row["good_id"] 
+        good["name"] = row["name"] 
+        good["category"] = row["category"] 
+        good["price"] = row["price"] 
+        good["description"] = row["description"] 
+        good["count"] = row["count"]
+    except:
+        good = {}
+    return good
 
 #create_customers_table()
 #insert_customer(customer_Sara)
