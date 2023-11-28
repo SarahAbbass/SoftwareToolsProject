@@ -40,7 +40,7 @@ def api_make_sale():
     try:
         # Check if the required data is provided
         if not good_name or not customer_username:
-            return jsonify({'error': 'Invalid request. Missing parameters.'}), 400
+            return jsonify({'error': 'Invalid request. Missing parameters.'})
 
         # Retrieve customer details
         customer = get_customer_by_username(customer_username)
@@ -76,7 +76,7 @@ def api_make_sale():
 
     except Exception as e:
         # Handle unexpected errors
-        return jsonify({'error': f'Internal Server Error: {str(e)}'}), 500
+        return jsonify({'error': f'Error: {str(e)}'})
 
 
 
