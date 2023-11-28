@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from create_db import get_customers, get_customer_by_username, insert_customer, update_customer, delete_customer
+from create_postgres_db import get_customers, get_customer_by_username, insert_customer, update_customer, delete_customer
 
 app = Flask(__name__)
 CORS(app, resources={r"/*":{"origins":"*"}})

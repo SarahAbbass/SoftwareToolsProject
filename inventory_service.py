@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from create_db import get_goods, get_good_by_good_id, insert_good, update_good, delete_good
+from create_postgres_db import get_goods, get_good_by_good_id, insert_good, update_good, delete_good
 
 app = Flask(__name__)
 CORS(app, resources={r"/*":{"origins":"*"}})

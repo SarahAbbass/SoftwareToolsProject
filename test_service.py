@@ -1,6 +1,6 @@
 import pytest
 from sales_service import app
-from create_db import insert_good, insert_customer
+from create_postgres_db import insert_good, insert_customer
 
 @pytest.fixture
 def client():
