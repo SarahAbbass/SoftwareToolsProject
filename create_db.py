@@ -375,9 +375,9 @@ def get_good_by_name(name):
         good = {}
     return good
 
-#create_customers_table()
-#insert_customer(customer_Sara)
-#insert_customer(customer_Malak)
-#create_inventory_table()
-#insert_good(ahmad_tea)
-#insert_good(dollys)
+create_customers_table()
+insert_customer(customer_Sara)
+insert_customer(customer_Malak)
+create_inventory_table()
+insert_good(ahmad_tea)
+insert_good(dollys)

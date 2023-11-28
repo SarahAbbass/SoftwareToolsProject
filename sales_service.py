@@ -40,25 +40,25 @@ def api_make_sale():
     try:
         # Check if the required data is provided
         if not good_name or not customer_username:
-            return jsonify({'error': 'Invalid request. Missing parameters.'})
+            return jsonify({'error': 'Invalid request. Missing parameters.'}), 400
 
         # Retrieve customer details
         customer = get_customer_by_username(customer_username)
         if not customer:
-            return jsonify({'error': 'Customer not found.'})
+            return jsonify({'error': 'Customer not found.'}), 404
 
         # Retrieve good details
         good = get_good_by_name(good_name)
         if not good:
-            return jsonify({'error': 'Good not found.'})
+            return jsonify({'error': 'Good not found.'}), 404
 
         # Check if the customer has enough money
         if customer['wallet_balance'] < good['price']:
-            return jsonify({'error': 'Insufficient funds.'})
+            return jsonify({'error': 'Insufficient funds.'}), 400
 
         # Check if the good is available
         if good['count'] <= 0:
-            return jsonify({'error': 'Good not available.'})
+            return jsonify({'error': 'Good not available.'}), 400
 
         # Deduct money from customer wallet
         new_wallet_balance = customer['wallet_balance'] - good['price']
