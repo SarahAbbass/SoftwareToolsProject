@@ -57,4 +57,4 @@ def api_delete_good(good_id):
     return jsonify(delete_good(good_id))
 
 if __name__=="__main__":
-    app.run()
+    app.run(port=3001)

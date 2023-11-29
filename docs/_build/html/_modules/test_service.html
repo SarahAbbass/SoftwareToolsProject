@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>test_service &mdash; project 00.00.01 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=d7bb8d4d"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            project
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Project</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">project</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">test_service</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for test_service</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">from</span> <span class="nn">sales_service</span> <span class="kn">import</span> <span class="n">app</span>
+<span class="kn">from</span> <span class="nn">create_db</span> <span class="kn">import</span> <span class="n">insert_good</span><span class="p">,</span> <span class="n">insert_customer</span>
+
+<div class="viewcode-block" id="client">
+<a class="viewcode-back" href="../test_service.html#test_service.client">[docs]</a>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">client</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pytest fixture to provide a Flask test client for API testing.</span>
+
+<span class="sd">    :yield: A Flask test client</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">app</span><span class="o">.</span><span class="n">test_client</span><span class="p">()</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">client</span></div>
+
+
+<div class="viewcode-block" id="test_api_get_goods">
+<a class="viewcode-back" href="../test_service.html#test_service.test_api_get_goods">[docs]</a>
+<span class="k">def</span> <span class="nf">test_api_get_goods</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/api/get_goods&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_api_get_good">
+<a class="viewcode-back" href="../test_service.html#test_service.test_api_get_good">[docs]</a>
+<span class="k">def</span> <span class="nf">test_api_get_good</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/api/good/1&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_api_make_sale">
+<a class="viewcode-back" href="../test_service.html#test_service.test_api_make_sale">[docs]</a>
+<span class="k">def</span> <span class="nf">test_api_make_sale</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">good_data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Sold Good&quot;</span><span class="p">,</span> 
+        <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="s2">&quot;Food&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="mf">50.0</span><span class="p">,</span> 
+        <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Chocolate&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="mi">10</span>
+        <span class="p">}</span>
+    <span class="n">insert_good</span><span class="p">(</span><span class="n">good_data</span><span class="p">)</span>
+    <span class="n">customer_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;full_name&quot;</span><span class="p">:</span> <span class="s2">&quot;test&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;testing&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;testing&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;Beirut, Lebanon&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
+    <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Male&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;marital_status&quot;</span><span class="p">:</span> <span class="s2">&quot;Single&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;wallet_balance&quot;</span><span class="p">:</span> <span class="mf">1000.0</span>
+        <span class="p">}</span>
+    <span class="n">insert_customer</span><span class="p">(</span><span class="n">customer_data</span><span class="p">)</span>
+    <span class="n">sale_data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;good_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Sold Good&quot;</span><span class="p">,</span> <span class="s2">&quot;customer_username&quot;</span><span class="p">:</span> <span class="s2">&quot;testing&quot;</span><span class="p">}</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;/api/sale&#39;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">sale_data</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_api_make_sale_invalid_request">
+<a class="viewcode-back" href="../test_service.html#test_service.test_api_make_sale_invalid_request">[docs]</a>
+<span class="k">def</span> <span class="nf">test_api_make_sale_invalid_request</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;/api/sale&#39;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{})</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">400</span>
+    <span class="k">assert</span> <span class="s2">&quot;error&quot;</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span></div>
+
+
+<div class="viewcode-block" id="test_api_make_sale_customer_not_found">
+<a class="viewcode-back" href="../test_service.html#test_service.test_api_make_sale_customer_not_found">[docs]</a>
+<span class="k">def</span> <span class="nf">test_api_make_sale_customer_not_found</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">sale_data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;good_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Test Good&quot;</span><span class="p">,</span> <span class="s2">&quot;customer_username&quot;</span><span class="p">:</span> <span class="s2">&quot;nonexistent_user&quot;</span><span class="p">}</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;/api/sale&#39;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">sale_data</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span>
+    <span class="k">assert</span> <span class="s2">&quot;error&quot;</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span></div>
+
+
+<div class="viewcode-block" id="test_api_make_sale_good_not_found">
+<a class="viewcode-back" href="../test_service.html#test_service.test_api_make_sale_good_not_found">[docs]</a>
+<span class="k">def</span> <span class="nf">test_api_make_sale_good_not_found</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">sale_data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;good_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Nonexistent Good&quot;</span><span class="p">,</span> <span class="s2">&quot;customer_username&quot;</span><span class="p">:</span> <span class="s2">&quot;test_user&quot;</span><span class="p">}</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;/api/sale&#39;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">sale_data</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span>
+    <span class="k">assert</span> <span class="s2">&quot;error&quot;</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span></div>
+
+
+<div class="viewcode-block" id="test_api_make_sale_insufficient_funds">
+<a class="viewcode-back" href="../test_service.html#test_service.test_api_make_sale_insufficient_funds">[docs]</a>
+<span class="k">def</span> <span class="nf">test_api_make_sale_insufficient_funds</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">good_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Expensive Good&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="s2">&quot;Food&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="mi">10000</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Caviar&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="mi">22</span>
+    <span class="p">}</span>
+    <span class="n">insert_good</span><span class="p">(</span><span class="n">good_data</span><span class="p">)</span>
+    <span class="n">sale_data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;good_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Expensive Good&quot;</span><span class="p">,</span> <span class="s2">&quot;customer_username&quot;</span><span class="p">:</span> <span class="s2">&quot;test_user&quot;</span><span class="p">}</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;/api/sale&#39;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">sale_data</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">400</span>
+    <span class="k">assert</span> <span class="s2">&quot;error&quot;</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span></div>
+
+
+<div class="viewcode-block" id="test_api_make_sale_insufficient_goods">
+<a class="viewcode-back" href="../test_service.html#test_service.test_api_make_sale_insufficient_goods">[docs]</a>
+<span class="k">def</span> <span class="nf">test_api_make_sale_insufficient_goods</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">good_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Restock Good&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="s2">&quot;Dairy&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Milk&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="mi">0</span>
+    <span class="p">}</span>
+    <span class="n">insert_good</span><span class="p">(</span><span class="n">good_data</span><span class="p">)</span>
+    <span class="n">sale_data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;good_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Restock Good&quot;</span><span class="p">,</span> <span class="s2">&quot;customer_username&quot;</span><span class="p">:</span> <span class="s2">&quot;test_user&quot;</span><span class="p">}</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;/api/sale&#39;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">sale_data</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">400</span>
+    <span class="k">assert</span> <span class="s2">&quot;error&quot;</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Sara and Firas.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>create_db &mdash; project 00.00.01 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=d7bb8d4d"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            project
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Project</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">project</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">create_db</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for create_db</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sqlite3</span>
+
+<div class="viewcode-block" id="connect_to_db">
+<a class="viewcode-back" href="../create_db.html#create_db.connect_to_db">[docs]</a>
+<span class="k">def</span> <span class="nf">connect_to_db</span><span class="p">():</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;database.db&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">conn</span></div>
+
+
+<span class="c1">################################### Customers #######################################</span>
+<span class="c1"># creating customers table and functionalities</span>
+<div class="viewcode-block" id="create_customers_table">
+<a class="viewcode-back" href="../create_db.html#create_db.create_customers_table">[docs]</a>
+<span class="k">def</span> <span class="nf">create_customers_table</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create the &#39;customers&#39; table in the database if it does not exist.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">connect_to_db</span><span class="p">()</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">            CREATE TABLE IF NOT EXISTS customers(</span>
+<span class="s1">                 customer_id INTEGER PRIMARY KEY,</span>
+<span class="s1">                 full_name TEXT NOT NULL,</span>
+<span class="s1">                 username TEXT UNIQUE NOT NULL,</span>
+<span class="s1">                 password TEXT NOT NULL,</span>
+<span class="s1">                 address TEXT,</span>
+<span class="s1">                 age INTEGER,</span>
+<span class="s1">                 gender TEXT,</span>
+<span class="s1">                 marital_status TEXT,</span>
+<span class="s1">                 wallet_balance REAL DEFAULT 0.0</span>
+<span class="s1">            );</span>
+<span class="s1">        &#39;&#39;&#39;</span><span class="p">)</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Customer table created successfully!&quot;</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Customer table creation failed -&quot;</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="insert_customer">
+<a class="viewcode-back" href="../create_db.html#create_db.insert_customer">[docs]</a>
+<span class="k">def</span> <span class="nf">insert_customer</span><span class="p">(</span><span class="n">customer</span><span class="p">):</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Insert a new customer into the database.</span>
+
+<span class="sd">    :param customer: A dictionary representing the customer</span>
+<span class="sd">    :type customer: dict</span>
+<span class="sd">    :return: A dictionary representing the inserted customer</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">inserted_customer</span> <span class="o">=</span> <span class="p">{}</span> 
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">connect_to_db</span><span class="p">()</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSERT INTO customers (full_name, username, password, address, age, gender, marital_status, wallet_balance) VALUES (?, ?, ?, ?, ?, ?, ?, ?)&quot;</span><span class="p">,</span>
+                    <span class="p">(</span><span class="n">customer</span><span class="p">[</span><span class="s1">&#39;full_name&#39;</span><span class="p">],</span> <span class="n">customer</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span> <span class="n">customer</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">],</span> <span class="n">customer</span><span class="p">[</span><span class="s1">&#39;address&#39;</span><span class="p">],</span> <span class="n">customer</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">],</span> <span class="n">customer</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">],</span> <span class="n">customer</span><span class="p">[</span><span class="s1">&#39;marital_status&#39;</span><span class="p">],</span> <span class="n">customer</span><span class="p">[</span><span class="s1">&#39;wallet_balance&#39;</span><span class="p">]))</span> 
+        <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">inserted_customer</span> <span class="o">=</span> <span class="n">get_customer_by_username</span><span class="p">(</span><span class="n">cur</span><span class="o">.</span><span class="n">lastrowid</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">IntegrityError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Error: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s1">. The username must be unique.&#39;</span><span class="p">}</span>
+    <span class="k">except</span><span class="p">:</span> 
+        <span class="n">conn</span><span class="p">()</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+    <span class="k">finally</span><span class="p">:</span> 
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">inserted_customer</span></div>
+
+
+<span class="n">customer_Sara</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;full_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Sara Abbas&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;SaraA&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;passwordSara&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;Geneva, Switzerland&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">22</span><span class="p">,</span>
+    <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;marital_status&quot;</span><span class="p">:</span> <span class="s2">&quot;Single&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;wallet_balance&quot;</span><span class="p">:</span> <span class="mf">0.0</span>
+<span class="p">}</span>
+
+<span class="n">customer_Malak</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;full_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Malak Saleh&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;MalakS&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;passwordMalak&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;Beirut, Lebanon&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">34</span><span class="p">,</span>
+    <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;marital_status&quot;</span><span class="p">:</span> <span class="s2">&quot;Married&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;wallet_balance&quot;</span><span class="p">:</span> <span class="mf">3.0</span>
+<span class="p">}</span>
+
+<div class="viewcode-block" id="get_customers">
+<a class="viewcode-back" href="../create_db.html#create_db.get_customers">[docs]</a>
+<span class="k">def</span> <span class="nf">get_customers</span><span class="p">():</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve a list of all customers.</span>
+
+<span class="sd">    :return: List of dictionaries, each representing a customer</span>
+<span class="sd">    :rtype: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">customers</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">connect_to_db</span><span class="p">()</span> 
+        <span class="n">conn</span><span class="o">.</span><span class="n">row_factory</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Row</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> 
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM customers&quot;</span><span class="p">)</span> 
+        <span class="n">rows</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+        
+        <span class="c1"># convert row objects to dictionary </span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+            <span class="n">customer</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">customer</span><span class="p">[</span><span class="s2">&quot;customer_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="s2">&quot;customer_id&quot;</span><span class="p">]</span> 
+            <span class="n">customer</span><span class="p">[</span><span class="s2">&quot;full_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="s2">&quot;full_name&quot;</span><span class="p">]</span> 
+            <span class="n">customer</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">]</span> 
+            <span class="n">customer</span><span class="p">[</span><span class="s2">&quot;password&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="s2">&quot;password&quot;</span><span class="p">]</span> 
+            <span class="n">customer</span><span class="p">[</span><span class="s2">&quot;address&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="s2">&quot;address&quot;</span><span class="p">]</span> 
+            <span class="n">customer</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span>
+            <span class="n">customer</span><span class="p">[</span><span class="s2">&quot;gender&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="s2">&quot;gender&quot;</span><span class="p">]</span>
+            <span class="n">customer</span><span class="p">[</span><span class="s2">&quot;marital_status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="s2">&quot;marital_status&quot;</span><span class="p">]</span> 
+            <span class="n">customer</span><span class="p">[</span><span class="s2">&quot;wallet_balance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="s2">&quot;wallet_balance&quot;</span><span class="p">]</span>
+            <span class="n">customers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">customers</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">return</span> <span class="n">customers</span></div>
+
+
+<div class="viewcode-block" id="get_customer_by_username">
+<a class="viewcode-back" href="../create_db.html#create_db.get_customer_by_username">[docs]</a>
+<span class="k">def</span> <span class="nf">get_customer_by_username</span><span class="p">(</span><span class="n">username</span><span class="p">):</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve customer information based on the provided username.</span>
+
+<span class="sd">    :param username: The username of the customer</span>
+<span class="sd">    :type username: str</span>
+<span class="sd">    :return: A dictionary representing the customer if found, else None</span>
+<span class="sd">    :rtype: dict or None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">customer</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">connect_to_db</span><span class="p">()</span> 
+        <span class="n">conn</span><span class="o">.</span><span class="n">row_factory</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Row</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM customers WHERE username = ?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">username</span><span class="p">,))</span> 
+        <span class="n">row</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        
+        <span class="c1"># convert row object to dictionary </span>
+        <span class="n">customer</span><span class="p">[</span><span class="s2">&quot;customer_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;customer_id&quot;</span><span class="p">]</span> 
+        <span class="n">customer</span><span class="p">[</span><span class="s2">&quot;full_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;full_name&quot;</span><span class="p">]</span> 
+        <span class="n">customer</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">]</span> 
+        <span class="n">customer</span><span class="p">[</span><span class="s2">&quot;password&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;password&quot;</span><span class="p">]</span> 
+        <span class="n">customer</span><span class="p">[</span><span class="s2">&quot;address&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;address&quot;</span><span class="p">]</span> 
+        <span class="n">customer</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span>
+        <span class="n">customer</span><span class="p">[</span><span class="s2">&quot;gender&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;gender&quot;</span><span class="p">]</span>
+        <span class="n">customer</span><span class="p">[</span><span class="s2">&quot;marital_status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;marital_status&quot;</span><span class="p">]</span> 
+        <span class="n">customer</span><span class="p">[</span><span class="s2">&quot;wallet_balance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;wallet_balance&quot;</span><span class="p">]</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">customer</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">return</span> <span class="n">customer</span></div>
+
+
+<div class="viewcode-block" id="update_customer">
+<a class="viewcode-back" href="../create_db.html#create_db.update_customer">[docs]</a>
+<span class="k">def</span> <span class="nf">update_customer</span><span class="p">(</span><span class="n">customer</span><span class="p">):</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Update customer information in the database.</span>
+
+<span class="sd">    :param customer: A dictionary representing the updated customer information</span>
+<span class="sd">    :type customer: dict</span>
+<span class="sd">    :return: A dictionary representing the updated customer</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">updated_customer</span> <span class="o">=</span> <span class="p">{}</span> 
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">connect_to_db</span><span class="p">()</span> 
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;UPDATE customers SET full_name = ?, password = ?, address = ?, age = ?, gender = ?, marital_status = ?, wallet_balance = ? WHERE username = ?&quot;</span><span class="p">,</span>
+                    <span class="p">(</span><span class="n">customer</span><span class="p">[</span><span class="s1">&#39;full_name&#39;</span><span class="p">],</span> <span class="n">customer</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">],</span> <span class="n">customer</span><span class="p">[</span><span class="s1">&#39;address&#39;</span><span class="p">],</span> <span class="n">customer</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">],</span> <span class="n">customer</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">],</span> <span class="n">customer</span><span class="p">[</span><span class="s1">&#39;marital_status&#39;</span><span class="p">],</span> <span class="n">customer</span><span class="p">[</span><span class="s2">&quot;wallet_balance&quot;</span><span class="p">],</span> <span class="n">customer</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">]))</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        
+        <span class="c1">#return the user</span>
+        <span class="n">updated_customer</span> <span class="o">=</span> <span class="n">get_customer_by_username</span><span class="p">(</span><span class="n">customer</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">])</span>
+    <span class="k">except</span><span class="p">:</span> 
+        <span class="n">conn</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+        <span class="n">updated_customer</span> <span class="o">=</span> <span class="p">{}</span> 
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span> 
+    <span class="k">return</span> <span class="n">updated_customer</span></div>
+
+
+<div class="viewcode-block" id="delete_customer">
+<a class="viewcode-back" href="../create_db.html#create_db.delete_customer">[docs]</a>
+<span class="k">def</span> <span class="nf">delete_customer</span><span class="p">(</span><span class="n">username</span><span class="p">):</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Delete a customer based on the provided username.</span>
+
+<span class="sd">    :param username: The username of the customer to be deleted</span>
+<span class="sd">    :type username: str</span>
+<span class="sd">    :return: A message representing either the success or the failure of deletion</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">connect_to_db</span><span class="p">()</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DELETE from customers WHERE username = ?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">username</span><span class="p">,))</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">message</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Customer deleted successfully.&quot;</span>
+    <span class="k">except</span><span class="p">:</span> 
+        <span class="n">conn</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+        <span class="n">message</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Cannot delete customer&quot;</span> 
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">message</span></div>
+
+
+<span class="c1">################################### Inventory #######################################</span>
+<span class="c1">#creating inventory table and functionalities</span>
+<div class="viewcode-block" id="create_inventory_table">
+<a class="viewcode-back" href="../create_db.html#create_db.create_inventory_table">[docs]</a>
+<span class="k">def</span> <span class="nf">create_inventory_table</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create the &#39;inventory&#39; table in the database if it does not exist.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">connect_to_db</span><span class="p">()</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">            CREATE TABLE IF NOT EXISTS inventory(</span>
+<span class="s1">                 good_id INTEGER PRIMARY KEY,</span>
+<span class="s1">                 name TEXT UNIQUE NOT NULL,</span>
+<span class="s1">                 category TEXT NOT NULL,</span>
+<span class="s1">                 price INTEGER NOT NULL,</span>
+<span class="s1">                 description TEXT,</span>
+<span class="s1">                 count INTEGER</span>
+<span class="s1">            );</span>
+<span class="s1">        &#39;&#39;&#39;</span><span class="p">)</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Inventory table created successfully!&quot;</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Inventory table creation failed -&quot;</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="insert_good">
+<a class="viewcode-back" href="../create_db.html#create_db.insert_good">[docs]</a>
+<span class="k">def</span> <span class="nf">insert_good</span><span class="p">(</span><span class="n">good</span><span class="p">):</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Insert a new good into the database.</span>
+
+<span class="sd">    :param good: A dictionary representing the good</span>
+<span class="sd">    :type good: dict</span>
+<span class="sd">    :return: A dictionary representing the inserted good</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">inserted_good</span> <span class="o">=</span> <span class="p">{}</span> 
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">connect_to_db</span><span class="p">()</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSERT INTO inventory (name, category, price, description, count) VALUES (?, ?, ?, ?, ?)&quot;</span><span class="p">,</span>
+                    <span class="p">(</span><span class="n">good</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">good</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">],</span> <span class="n">good</span><span class="p">[</span><span class="s1">&#39;price&#39;</span><span class="p">],</span> <span class="n">good</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">],</span> <span class="n">good</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]))</span> 
+        <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">inserted_good</span> <span class="o">=</span> <span class="n">get_good_by_good_id</span><span class="p">(</span><span class="n">cur</span><span class="o">.</span><span class="n">lastrowid</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span> 
+        <span class="n">conn</span><span class="p">()</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+    <span class="k">finally</span><span class="p">:</span> 
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">inserted_good</span></div>
+
+
+<span class="n">ahmad_tea</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Ahmad Tea&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="s2">&quot;Food&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="mf">1.3</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Black Tea&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="mi">22</span>
+<span class="p">}</span>
+
+<span class="n">dollys</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Dolly&#39;s Ketchup&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="s2">&quot;Food&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Tomato Ketchup&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="mi">15</span>
+<span class="p">}</span>
+
+<div class="viewcode-block" id="get_goods">
+<a class="viewcode-back" href="../create_db.html#create_db.get_goods">[docs]</a>
+<span class="k">def</span> <span class="nf">get_goods</span><span class="p">():</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve a list of all goods.</span>
+
+<span class="sd">    :return: List of dictionaries, each representing a good</span>
+<span class="sd">    :rtype: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">goods</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">connect_to_db</span><span class="p">()</span> 
+        <span class="n">conn</span><span class="o">.</span><span class="n">row_factory</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Row</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> 
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM inventory&quot;</span><span class="p">)</span> 
+        <span class="n">rows</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+        
+        <span class="c1"># convert row objects to dictionary </span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+            <span class="n">good</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">good</span><span class="p">[</span><span class="s2">&quot;good_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="s2">&quot;good_id&quot;</span><span class="p">]</span> 
+            <span class="n">good</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> 
+            <span class="n">good</span><span class="p">[</span><span class="s2">&quot;category&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="s2">&quot;category&quot;</span><span class="p">]</span> 
+            <span class="n">good</span><span class="p">[</span><span class="s2">&quot;price&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="s2">&quot;price&quot;</span><span class="p">]</span> 
+            <span class="n">good</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span> 
+            <span class="n">good</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]</span>
+            <span class="n">goods</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">good</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">goods</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">return</span> <span class="n">goods</span></div>
+
+
+<div class="viewcode-block" id="get_good_by_good_id">
+<a class="viewcode-back" href="../create_db.html#create_db.get_good_by_good_id">[docs]</a>
+<span class="k">def</span> <span class="nf">get_good_by_good_id</span><span class="p">(</span><span class="n">good_id</span><span class="p">):</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve good information based on the provided good_id.</span>
+
+<span class="sd">    :param good_id: The good_id of the good</span>
+<span class="sd">    :type good_id: str</span>
+<span class="sd">    :return: A dictionary representing the good if found, else None</span>
+<span class="sd">    :rtype: dict or None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">good</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">connect_to_db</span><span class="p">()</span> 
+        <span class="n">conn</span><span class="o">.</span><span class="n">row_factory</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Row</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM inventory WHERE good_id = ?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">good_id</span><span class="p">,))</span> 
+        <span class="n">row</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        
+        <span class="c1"># convert row object to dictionary </span>
+        <span class="n">good</span><span class="p">[</span><span class="s2">&quot;good_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;good_id&quot;</span><span class="p">]</span> 
+        <span class="n">good</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> 
+        <span class="n">good</span><span class="p">[</span><span class="s2">&quot;category&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;category&quot;</span><span class="p">]</span> 
+        <span class="n">good</span><span class="p">[</span><span class="s2">&quot;price&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;price&quot;</span><span class="p">]</span> 
+        <span class="n">good</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span> 
+        <span class="n">good</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">good</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">return</span> <span class="n">good</span></div>
+
+
+<div class="viewcode-block" id="update_good">
+<a class="viewcode-back" href="../create_db.html#create_db.update_good">[docs]</a>
+<span class="k">def</span> <span class="nf">update_good</span><span class="p">(</span><span class="n">good</span><span class="p">):</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Update good information in the database.</span>
+
+<span class="sd">    :param good: A dictionary representing the updated good information</span>
+<span class="sd">    :type good: dict</span>
+<span class="sd">    :return: A dictionary representing the updated good</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">updated_good</span> <span class="o">=</span> <span class="p">{}</span> 
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">connect_to_db</span><span class="p">()</span> 
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;UPDATE inventory SET name = ?, category = ?, price = ?, description = ?, count = ? WHERE good_id = ?&quot;</span><span class="p">,</span>
+                    <span class="p">(</span><span class="n">good</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">good</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">],</span> <span class="n">good</span><span class="p">[</span><span class="s1">&#39;price&#39;</span><span class="p">],</span> <span class="n">good</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">],</span> <span class="n">good</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">],</span> <span class="n">good</span><span class="p">[</span><span class="s2">&quot;good_id&quot;</span><span class="p">]))</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        
+        <span class="c1">#return the user</span>
+        <span class="n">updated_good</span> <span class="o">=</span> <span class="n">get_good_by_good_id</span><span class="p">(</span><span class="n">good</span><span class="p">[</span><span class="s2">&quot;good_id&quot;</span><span class="p">])</span>
+    <span class="k">except</span><span class="p">:</span> 
+        <span class="n">conn</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+        <span class="n">updated_good</span> <span class="o">=</span> <span class="p">{}</span> 
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span> 
+    <span class="k">return</span> <span class="n">updated_good</span></div>
+
+
+<div class="viewcode-block" id="delete_good">
+<a class="viewcode-back" href="../create_db.html#create_db.delete_good">[docs]</a>
+<span class="k">def</span> <span class="nf">delete_good</span><span class="p">(</span><span class="n">good_id</span><span class="p">):</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Delete a good based on the provided good_id.</span>
+
+<span class="sd">    :param good_id: The good_id of the good to be deleted</span>
+<span class="sd">    :type good_id: str</span>
+<span class="sd">    :return: A message representing either the success or the failure of deletion</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">connect_to_db</span><span class="p">()</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DELETE from inventory WHERE good_id = ?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">good_id</span><span class="p">,))</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">message</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Good deleted successfully.&quot;</span>
+    <span class="k">except</span><span class="p">:</span> 
+        <span class="n">conn</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+        <span class="n">message</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Cannot delete good&quot;</span> 
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">message</span></div>
+
+
+<div class="viewcode-block" id="get_good_by_name">
+<a class="viewcode-back" href="../create_db.html#create_db.get_good_by_name">[docs]</a>
+<span class="k">def</span> <span class="nf">get_good_by_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve a good with the given name.</span>
+
+<span class="sd">    :param name: The name of the good</span>
+<span class="sd">    :type name: str</span>
+<span class="sd">    :return: A good with the given name</span>
+<span class="sd">    :rtype: dict or None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">good</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">connect_to_db</span><span class="p">()</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">row_factory</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Row</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM inventory WHERE name = ?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span><span class="p">,))</span> 
+        <span class="n">row</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        
+        <span class="c1"># convert row object to dictionary </span>
+        <span class="n">good</span><span class="p">[</span><span class="s2">&quot;good_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;good_id&quot;</span><span class="p">]</span> 
+        <span class="n">good</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> 
+        <span class="n">good</span><span class="p">[</span><span class="s2">&quot;category&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;category&quot;</span><span class="p">]</span> 
+        <span class="n">good</span><span class="p">[</span><span class="s2">&quot;price&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;price&quot;</span><span class="p">]</span> 
+        <span class="n">good</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span> 
+        <span class="n">good</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">good</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">return</span> <span class="n">good</span></div>
+
+
+<span class="n">create_customers_table</span><span class="p">()</span>
+<span class="n">insert_customer</span><span class="p">(</span><span class="n">customer_Sara</span><span class="p">)</span>
+<span class="n">insert_customer</span><span class="p">(</span><span class="n">customer_Malak</span><span class="p">)</span>
+<span class="n">create_inventory_table</span><span class="p">()</span>
+<span class="n">insert_good</span><span class="p">(</span><span class="n">ahmad_tea</span><span class="p">)</span>
+<span class="n">insert_good</span><span class="p">(</span><span class="n">dollys</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Sara and Firas.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

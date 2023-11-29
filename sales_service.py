@@ -17,7 +17,7 @@ def api_get_goods():
     goods_list = get_goods()
     names_and_prices = [(good["name"], good["price"]) for good in goods_list]
 
-    return jsonify(names_and_prices)
+    return jsonify(get_goods())
 
 @app.route('/api/good/<good_id>', methods=['GET'])
 def api_get_good(good_id):
@@ -78,8 +78,8 @@ def api_make_sale():
         # Handle unexpected errors
         return jsonify({'error': f'Error: {str(e)}'})
 
-
-
+if __name__=="__main__":
+    app.run(port=8080)
 
 
 

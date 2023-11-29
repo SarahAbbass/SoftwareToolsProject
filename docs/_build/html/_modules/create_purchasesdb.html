@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>create_purchasesdb &mdash; project 00.00.01 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=d7bb8d4d"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            project
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Project</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">project</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">create_purchasesdb</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for create_purchasesdb</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sqlite3</span>
+<span class="kn">from</span> <span class="nn">create_db</span> <span class="kn">import</span> <span class="n">connect_to_db</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+
+<div class="viewcode-block" id="create_purchases_table">
+<a class="viewcode-back" href="../create_purchasesdb.html#create_purchasesdb.create_purchases_table">[docs]</a>
+<span class="k">def</span> <span class="nf">create_purchases_table</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create the &#39;purchases&#39; table in the database if it does not exist.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">connect_to_db</span><span class="p">()</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">            CREATE TABLE IF NOT EXISTS historical_purchases(</span>
+<span class="s1">                 hist_purchase_id INTEGER PRIMARY KEY AUTOINCREMENT,</span>
+<span class="s1">                 customer_username TEXT NOT NULL ,</span>
+<span class="s1">                 good_name TEXT NOT NULL,</span>
+<span class="s1">                 price REAL NOT NULL,</span>
+<span class="s1">                 purchase_date TEXT CHECK (purchase_date LIKE &#39;____-__-__ __:__:__&#39;),</span>
+<span class="s1">                 FOREIGN KEY (customer_username) REFERENCES customers(username)</span>
+<span class="s1">            );</span>
+<span class="s1">        &#39;&#39;&#39;</span><span class="p">)</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Historical Purchases table created successfully!&quot;</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Historical Purchases table creation failed -&quot;</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="get_purchases_by_username">
+<a class="viewcode-back" href="../create_purchasesdb.html#create_purchasesdb.get_purchases_by_username">[docs]</a>
+<span class="k">def</span> <span class="nf">get_purchases_by_username</span><span class="p">(</span><span class="n">customer_username</span><span class="p">):</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve customer historical purchases based on the provided username.</span>
+
+<span class="sd">    :param username: The username of the customer</span>
+<span class="sd">    :type username: str</span>
+<span class="sd">    :return: A list representing all the purchases made by a customer if found, else None</span>
+<span class="sd">    :rtype: list or None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">purchases</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">connect_to_db</span><span class="p">()</span> 
+        <span class="n">conn</span><span class="o">.</span><span class="n">row_factory</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Row</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM historical_purchases WHERE customer_username = ?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">customer_username</span><span class="p">,))</span> 
+        <span class="n">rows</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+        
+        <span class="c1"># convert row object to dictionary </span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+            <span class="n">purchase</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;customer_username&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;customer_username&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;good_name&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;good_name&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;price&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;purchase_date&quot;</span><span class="p">]</span>
+            <span class="p">}</span>
+            <span class="n">purchases</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">purchase</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">purchases</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">purchases</span></div>
+
+
+<div class="viewcode-block" id="insert_purchase">
+<a class="viewcode-back" href="../create_purchasesdb.html#create_purchasesdb.insert_purchase">[docs]</a>
+<span class="k">def</span> <span class="nf">insert_purchase</span><span class="p">(</span><span class="n">customer_username</span><span class="p">,</span> <span class="n">good_name</span><span class="p">,</span> <span class="n">price</span><span class="p">):</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Insert a new purchase into the database.</span>
+
+<span class="sd">    :param customer: A dictionary representing the customer</span>
+<span class="sd">    :type customer: dict</span>
+<span class="sd">    :return: A dictionary representing the inserted customer</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">inserted_purchase</span> <span class="o">=</span> <span class="p">{}</span> 
+    <span class="n">current_datetime</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="c1"># Convert the current datetime to a string in the required format</span>
+    <span class="n">purchase_date</span> <span class="o">=</span> <span class="n">current_datetime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">connect_to_db</span><span class="p">()</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSERT INTO historical_purchases (customer_username, good_name, price, purchase_date) VALUES (?, ?, ?, ?)&quot;</span><span class="p">,</span>
+                    <span class="p">(</span><span class="n">customer_username</span><span class="p">,</span> <span class="n">good_name</span><span class="p">,</span> <span class="n">price</span><span class="p">,</span> <span class="n">purchase_date</span><span class="p">))</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM historical_purchases WHERE customer_username = ? ORDER BY datetime(purchase_date) DESC LIMIT 1&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">customer_username</span><span class="p">,))</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">row</span><span class="p">:</span>
+            <span class="c1"># Access the elements by index</span>
+            <span class="n">inserted_purchase</span><span class="p">[</span><span class="s2">&quot;customer_username&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">inserted_purchase</span><span class="p">[</span><span class="s2">&quot;good_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">inserted_purchase</span><span class="p">[</span><span class="s2">&quot;price&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+            <span class="n">inserted_purchase</span><span class="p">[</span><span class="s2">&quot;purchase_date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+        
+    <span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">IntegrityError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Error: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s1">. The username must be unique.&#39;</span><span class="p">}</span>
+    <span class="k">finally</span><span class="p">:</span> 
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">inserted_purchase</span></div>
+
+
+<div class="viewcode-block" id="delete_latest_purchase">
+<a class="viewcode-back" href="../create_purchasesdb.html#create_purchasesdb.delete_latest_purchase">[docs]</a>
+<span class="k">def</span> <span class="nf">delete_latest_purchase</span><span class="p">(</span><span class="n">customer_username</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Delete the latest purchase from the database.</span>
+
+<span class="sd">    :param customer_username: A string representing the customer&#39;s user name</span>
+<span class="sd">    :type customer: string</span>
+<span class="sd">    :return: A dictionary representing the deleted purchase</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">deleted_purchase</span> <span class="o">=</span> <span class="p">{}</span> 
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">connect_to_db</span><span class="p">()</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM historical_purchases WHERE customer_username = ? ORDER BY datetime(purchase_date) DESC LIMIT 1&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">customer_username</span><span class="p">,))</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">row</span><span class="p">:</span>
+            <span class="n">deleted_purchase</span><span class="p">[</span><span class="s2">&quot;customer_username&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">deleted_purchase</span><span class="p">[</span><span class="s2">&quot;good_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">deleted_purchase</span><span class="p">[</span><span class="s2">&quot;price&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+            <span class="n">deleted_purchase</span><span class="p">[</span><span class="s2">&quot;purchase_date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+
+            <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DELETE FROM historical_purchases WHERE hist_purchase_id = ?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],))</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        
+    <span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">IntegrityError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Error: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s1">. The username must be unique.&#39;</span><span class="p">}</span>
+    <span class="k">finally</span><span class="p">:</span> 
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">deleted_purchase</span></div>
+
+
+<div class="viewcode-block" id="drop_purchases_table">
+<a class="viewcode-back" href="../create_purchasesdb.html#create_purchasesdb.drop_purchases_table">[docs]</a>
+<span class="k">def</span> <span class="nf">drop_purchases_table</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Drop the &#39;historical_purchases&#39; table from the database.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">connect_to_db</span><span class="p">()</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DROP TABLE IF EXISTS historical_purchases&quot;</span><span class="p">)</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Historical Purchases table dropped successfully!&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error dropping table: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<span class="c1"># Call the function to drop the table</span>
+<span class="n">user_test</span> <span class="o">=</span> <span class="s2">&quot;user_test&quot;</span>
+<span class="n">good_test</span> <span class="o">=</span> <span class="s2">&quot;user_good&quot;</span>
+<span class="c1">#create_purchases_table()</span>
+<span class="c1">#print(insert_purchase(user_test, good_test, 10))</span>
+<span class="c1">#print(delete_latest_purchase(&quot;user_test&quot;))</span>
+<span class="c1">#print(get_purchases_by_username(user_test))</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Sara and Firas.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

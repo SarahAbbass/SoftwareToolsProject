@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from create_db import get_customers, get_customer_by_username, insert_customer, update_customer, delete_customer
+import requests
 
 app = Flask(__name__)
 CORS(app, resources={r"/*":{"origins":"*"}})
@@ -102,6 +103,29 @@ def api_deduct_customer():
             return jsonify({'error': 'Insufficient funds.'}), 400
     else:
         return jsonify({'error': f'Customer with username {username} not found.'}), 404
+    
+@app.route('/api/customers/charge_goods', methods=['POST'])
+def api_charge_goods():
+    """API endpoint to charge a customer for goods.
+
+    :return: JSON response confirming the successful charge for goods
+    :rtype: JSON
+    """
+    data = request.get_json()
+    username = data.get('username')
+    amount = data.get('amount')
+
+    # Make a request to the goods app to charge for goods
+    goods_app_url = 'http://localhost:5001/api/goods/charge'
+    goods_data = {'username': username, 'amount': amount}
+    goods_response = requests.post(goods_app_url, json=goods_data)
+
+    if goods_response.status_code == 200:
+        # Goods charged successfully, you can do additional processing if needed
+        return jsonify({'message': f'Goods charged successfully for {username}.'})
+    else:
+        # Handle error from goods app
+        return jsonify({'error': f'Error charging goods for {username}. Check goods app.'}), goods_response.status_code
 
 if __name__=="__main__":
-    app.run()
+    app.run(port=3000)

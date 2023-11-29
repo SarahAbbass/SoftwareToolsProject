@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>create_db module &mdash; project 00.00.01 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=d7bb8d4d"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="create_purchasesdb module" href="create_purchasesdb.html" />
+    <link rel="prev" title="Project" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            project
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Project</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">create_db module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#create_db.connect_to_db"><code class="docutils literal notranslate"><span class="pre">connect_to_db()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create_db.create_customers_table"><code class="docutils literal notranslate"><span class="pre">create_customers_table()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create_db.create_inventory_table"><code class="docutils literal notranslate"><span class="pre">create_inventory_table()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create_db.delete_customer"><code class="docutils literal notranslate"><span class="pre">delete_customer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create_db.delete_good"><code class="docutils literal notranslate"><span class="pre">delete_good()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create_db.get_customer_by_username"><code class="docutils literal notranslate"><span class="pre">get_customer_by_username()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create_db.get_customers"><code class="docutils literal notranslate"><span class="pre">get_customers()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create_db.get_good_by_good_id"><code class="docutils literal notranslate"><span class="pre">get_good_by_good_id()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create_db.get_good_by_name"><code class="docutils literal notranslate"><span class="pre">get_good_by_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create_db.get_goods"><code class="docutils literal notranslate"><span class="pre">get_goods()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create_db.insert_customer"><code class="docutils literal notranslate"><span class="pre">insert_customer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create_db.insert_good"><code class="docutils literal notranslate"><span class="pre">insert_good()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create_db.update_customer"><code class="docutils literal notranslate"><span class="pre">update_customer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create_db.update_good"><code class="docutils literal notranslate"><span class="pre">update_good()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="create_purchasesdb.html">create_purchasesdb module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="customers_service.html">customers_service module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inventory_service.html">inventory_service module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sales_service.html">sales_service module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_customers.html">test_customers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_inventory.html">test_inventory module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_service.html">test_service module</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">project</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Project</a></li>
+      <li class="breadcrumb-item active">create_db module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/create_db.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-create_db">
+<span id="create-db-module"></span><h1>create_db module<a class="headerlink" href="#module-create_db" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="create_db.connect_to_db">
+<span class="sig-prename descclassname"><span class="pre">create_db.</span></span><span class="sig-name descname"><span class="pre">connect_to_db</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/create_db.html#connect_to_db"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_db.connect_to_db" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="create_db.create_customers_table">
+<span class="sig-prename descclassname"><span class="pre">create_db.</span></span><span class="sig-name descname"><span class="pre">create_customers_table</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/create_db.html#create_customers_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_db.create_customers_table" title="Link to this definition"></a></dt>
+<dd><p>Create the ‘customers’ table in the database if it does not exist.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="create_db.create_inventory_table">
+<span class="sig-prename descclassname"><span class="pre">create_db.</span></span><span class="sig-name descname"><span class="pre">create_inventory_table</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/create_db.html#create_inventory_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_db.create_inventory_table" title="Link to this definition"></a></dt>
+<dd><p>Create the ‘inventory’ table in the database if it does not exist.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="create_db.delete_customer">
+<span class="sig-prename descclassname"><span class="pre">create_db.</span></span><span class="sig-name descname"><span class="pre">delete_customer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/create_db.html#delete_customer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_db.delete_customer" title="Link to this definition"></a></dt>
+<dd><p>Delete a customer based on the provided username.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>username</strong> (<em>str</em>) – The username of the customer to be deleted</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A message representing either the success or the failure of deletion</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="create_db.delete_good">
+<span class="sig-prename descclassname"><span class="pre">create_db.</span></span><span class="sig-name descname"><span class="pre">delete_good</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">good_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/create_db.html#delete_good"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_db.delete_good" title="Link to this definition"></a></dt>
+<dd><p>Delete a good based on the provided good_id.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>good_id</strong> (<em>str</em>) – The good_id of the good to be deleted</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A message representing either the success or the failure of deletion</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="create_db.get_customer_by_username">
+<span class="sig-prename descclassname"><span class="pre">create_db.</span></span><span class="sig-name descname"><span class="pre">get_customer_by_username</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/create_db.html#get_customer_by_username"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_db.get_customer_by_username" title="Link to this definition"></a></dt>
+<dd><p>Retrieve customer information based on the provided username.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>username</strong> (<em>str</em>) – The username of the customer</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary representing the customer if found, else None</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="create_db.get_customers">
+<span class="sig-prename descclassname"><span class="pre">create_db.</span></span><span class="sig-name descname"><span class="pre">get_customers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/create_db.html#get_customers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_db.get_customers" title="Link to this definition"></a></dt>
+<dd><p>Retrieve a list of all customers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of dictionaries, each representing a customer</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="create_db.get_good_by_good_id">
+<span class="sig-prename descclassname"><span class="pre">create_db.</span></span><span class="sig-name descname"><span class="pre">get_good_by_good_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">good_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/create_db.html#get_good_by_good_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_db.get_good_by_good_id" title="Link to this definition"></a></dt>
+<dd><p>Retrieve good information based on the provided good_id.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>good_id</strong> (<em>str</em>) – The good_id of the good</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary representing the good if found, else None</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="create_db.get_good_by_name">
+<span class="sig-prename descclassname"><span class="pre">create_db.</span></span><span class="sig-name descname"><span class="pre">get_good_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/create_db.html#get_good_by_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_db.get_good_by_name" title="Link to this definition"></a></dt>
+<dd><p>Retrieve a good with the given name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – The name of the good</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A good with the given name</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="create_db.get_goods">
+<span class="sig-prename descclassname"><span class="pre">create_db.</span></span><span class="sig-name descname"><span class="pre">get_goods</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/create_db.html#get_goods"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_db.get_goods" title="Link to this definition"></a></dt>
+<dd><p>Retrieve a list of all goods.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of dictionaries, each representing a good</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="create_db.insert_customer">
+<span class="sig-prename descclassname"><span class="pre">create_db.</span></span><span class="sig-name descname"><span class="pre">insert_customer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">customer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/create_db.html#insert_customer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_db.insert_customer" title="Link to this definition"></a></dt>
+<dd><p>Insert a new customer into the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>customer</strong> (<em>dict</em>) – A dictionary representing the customer</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary representing the inserted customer</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="create_db.insert_good">
+<span class="sig-prename descclassname"><span class="pre">create_db.</span></span><span class="sig-name descname"><span class="pre">insert_good</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">good</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/create_db.html#insert_good"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_db.insert_good" title="Link to this definition"></a></dt>
+<dd><p>Insert a new good into the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>good</strong> (<em>dict</em>) – A dictionary representing the good</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary representing the inserted good</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="create_db.update_customer">
+<span class="sig-prename descclassname"><span class="pre">create_db.</span></span><span class="sig-name descname"><span class="pre">update_customer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">customer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/create_db.html#update_customer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_db.update_customer" title="Link to this definition"></a></dt>
+<dd><p>Update customer information in the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>customer</strong> (<em>dict</em>) – A dictionary representing the updated customer information</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary representing the updated customer</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="create_db.update_good">
+<span class="sig-prename descclassname"><span class="pre">create_db.</span></span><span class="sig-name descname"><span class="pre">update_good</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">good</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/create_db.html#update_good"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#create_db.update_good" title="Link to this definition"></a></dt>
+<dd><p>Update good information in the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>good</strong> (<em>dict</em>) – A dictionary representing the updated good information</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary representing the updated good</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="Project" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="create_purchasesdb.html" class="btn btn-neutral float-right" title="create_purchasesdb module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Sara and Firas.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
